@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import calabashes.field.BattleGridPane?>
+
+<GridPane   xmlns:fx="http://javafx.com/fxml"
+            prefHeight="530.0" prefWidth="847.0"
+            fx:controller="calabashes.MainPaneController"
+            alignment="center" hgap="1" vgap="1"
+>
+    <columnConstraints>
+        <ColumnConstraints percentWidth="80"/>
+        <ColumnConstraints percentWidth="10"/>
+        <ColumnConstraints percentWidth="10"/>
+    </columnConstraints>
+
+
+    <BattleGridPane fx:id="gridPane" GridPane.columnIndex="0" GridPane.rowIndex="0"
+                    fx:factory="getInstance" GridPane.rowSpan="4"
+    />
+    <Label text="事件表" GridPane.columnIndex="1" GridPane.rowIndex="0"
+    GridPane.columnSpan="2"/>
+    <ListView fx:id="listView" GridPane.columnIndex="1" GridPane.rowIndex="1"
+              GridPane.columnSpan="2"/>
+    <Label text="葫芦娃" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+    <ListView fx:id="calabashList" GridPane.columnIndex="1" GridPane.rowIndex="3"
+              accessibleText="葫芦娃"/>
+    <Label text="妖精" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+    <ListView fx:id="demonList" GridPane.columnIndex="2" GridPane.rowIndex="3"
+              accessibleText="妖精"/>
+
+</GridPane>

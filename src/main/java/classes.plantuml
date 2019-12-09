@@ -1,0 +1,131 @@
+@startuml
+
+class calabashes.Livingtems.Living{
+    #calabashes.Fieldfield.Field calabashes.field;
+    #calabashes.fieldashes.Position position;
+    #boolean moveable;
+    +calabashes.Positionld.Position getPosition();
+    +boolean isMoveable();
+    +void setMoveable(boolean on);
+    +boolean move(int dx,int dy);
+    +boolean swapWith(calabashes.Livingtems.Living another);
+    +boolean moveOrSwap(int dx,int dy);
+    +boolean walkTowards(calabashes.fieldashes.Position position);
+    -boolean pathTo(calabashes.Fieldfield.Field passed, calabashes.Positionld.Position position, List<calabashes.itemsashes.Living> called);
+    +boolean exchangeable();
+    +String toString();
+}
+
+calabashes.Fieldfield.Field o-- calabashes.itemsashes.Living
+calabashes.Livingtems.Living *-- calabashes.Positionld.Position
+
+class calabashes.itemsashes.Calabash{
+    -int order;
+    +String toString();
+}
+
+calabashes.Livingtems.Living <|-- calabashes.itemsashes.Calabash
+
+class calabashes.itemsashes.Elder{
+    -calabashes.Calabashms.Calabash[] calabashes;
+    +void standAsSnake();
+    +String toString();
+}
+
+calabashes.Livingtems.Living <|-- calabashes.itemsashes.Elder
+calabashes.itemsashes.Elder "7" o-- calabashes.itemsashes.Calabash
+
+class calabashes.FollowDemonFollowDemon{
+    -int order;
+    +String toString();
+    +boolean exchangeable();
+}
+
+calabashes.Livingtems.Living <|-- calabashes.FollowDemonFollowDemon
+
+class calabashes.itemsashes.ScorpionDemon{
+    -int followCount;
+    -calabashes.FollowDemonFollowDemon[] followDemons;
+    +void standAsSwing();
+    +void standAsArrow();
+    +String toString();
+    -boolean findPlaceForSwing();
+    -boolean findPlaceForArrow();
+}
+
+calabashes.itemsashes.Living <|-- calabashes.itemsashes.ScorpionDemon
+calabashes.itemsashes.ScorpionDemon "n" ... calabashes.itemsashes.FollowDemon
+
+class calabashes.SnakeDemon.SnakeDemon{
+    -calabashes.itemsashes.ScorpionDemon scorpionDemon;
+    +void standAsArrow();
+    +void standAsSwing();
+    +String toString();
+}
+
+calabashes.Livingtems.Living <|-- calabashes.SnakeDemon.SnakeDemon
+calabashes.itemsashes.SnakeDemon ... calabashes.itemsashes.ScorpionDemon
+
+class calabashes.Positionld.Position{
+    -int x,y;
+    +setPos(int x,int y);
+    +int getX();
+    +int getY();
+    +boolean adjacentWith(calabashes.Positionld.Position another);
+    +calabashes.fieldashes.Position adjacentPosition(calabashes.field.Direction dir);
+    +boolean equals(calabashes.Positionld.Position an);
+    +calabashes.fieldashes.Position copy();
+    +String toString();
+}
+
+class calabashes.field.Direction{
+    -int dir;
+    +calabashes.field.Direction(calabashes.fieldashes.Position center,target);
+    +int dx();
+    +int dy();
+    +void next();
+}
+
+calabashes.fieldashes.Position -- calabashes.field.Direction
+
+class calabashes.Fieldfield.Field{
+    +static int N;
+    -calabashes.itemsashes.Living[][] map;
+    +boolean addLiving(calabashes.itemsashes.Living);
+    +boolean addLiving(calabashes.Livingtems.Living,calabashes.fieldashes.Position);
+    +void removeLiving(calabashes.Positionld.Position);
+    +calabashes.itemsashes.Living livingAt(calabashes.Positionld.Position);
+    +boolean moveLiving(calabashes.itemsashes.Living,int,int);
+    +boolean swapLiving(calabashes.itemsashes.Living,calabashes.Livingtems.Living);
+    +boolean inside(calabashes.fieldashes.Position);
+    +void draw();
+    +boolean Unreachable();
+    +calabashes.fieldashes.Position randomPosition();
+}
+
+class calabashes.formations.Formation{
+    #calabashes.Positionld.Position[] form();
+}
+
+class calabashes.formations.SwingFormation{
+}
+
+calabashes.formations.Formation <|-- calabashes.formations.SwingFormation
+
+class calabashes.ArrowFormationowFormation{
+
+}
+
+calabashes.Formations.Formation <|-- calabashes.ArrowFormationowFormation
+
+class calabashes.formations.FormationHandler{
+    -Formation formation;
+    -calabashes.Livingtems.Living[] followers;
+    -calabashes.itemsashes.Living leader;
+    +void embattle();
+}
+
+calabashes.formations.FormationHandler o-- calabashes.Formations.Formation
+
+calabashes.ScorpionDemonorpionDemon ... calabashes.formations.FormationHandler
+calabashes.items.Elder ... calabashes.formations.FormationHandler
