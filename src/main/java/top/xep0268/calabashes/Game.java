@@ -29,7 +29,7 @@ public class Game implements Runnable{
     private BattleField field=BattleField.getInstance();
     private Elder elder;
     private SnakeDemon snakeDemon;
-    public static final int INTERVAL=200;  //时钟周期毫秒数
+    public static final int INTERVAL=400;  //时钟周期毫秒数
     private GridPane pane;  //程序主界面
     @FXML
     private ListView<String> listView,calabashList,demonList;
@@ -324,6 +324,8 @@ public class Game implements Runnable{
                 public void run() {
                     new Alert(Alert.AlertType.INFORMATION,"Game over!\n"+result).showAndWait();
 //                    clearCurrentTurn();
+                    clearCurrentTurn();
+                    initFormations();
                 }
             });
             executing=false;

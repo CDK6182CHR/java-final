@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
  * 2. 禁止中间重新开始或者读取。
  */
 public class Field<T extends Block> {
-    public static final int M=10,N=12;  //M行, N列
+    public static final int M=12,N=15;  //M行, N列
     protected List<List<T>> map;
     Class<T> meta;
 

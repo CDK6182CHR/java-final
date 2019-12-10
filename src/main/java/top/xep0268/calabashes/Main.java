@@ -50,7 +50,7 @@ public class Main extends Application{
             public void run() {
                 game.initFormations();
                 try{
-                    TimeUnit.MILLISECONDS.sleep(300);
+                    TimeUnit.MILLISECONDS.sleep(1300);
                 }catch (InterruptedException e){
                     //
                 }

@@ -101,6 +101,10 @@ public class Position implements Serializable {
             return "dir["+dx()+", "+dy()+"]";
         }
 
+        public int code(){
+            return dir;
+        }
+
     }
 
     public Position(int _x,int _y){

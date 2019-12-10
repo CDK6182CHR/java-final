@@ -14,10 +14,7 @@ import javafx.scene.image.*;
 import javafx.scene.layout.*;
 
 import java.io.Serializable;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.*;
 
 import static java.lang.Math.abs;
@@ -34,6 +31,7 @@ public abstract class Living extends Thread implements Serializable {
     public transient int timeStamp=0;
     private boolean inVideo=false;//是否在回放模式
 //    private transient ScheduledExecutorService scheduler;
+    private static Random random=new Random();
 
     public Living(Position pos,Field field_,Game game_){
         position=pos.copy();
@@ -180,20 +178,49 @@ public abstract class Living extends Thread implements Serializable {
 
     /**
      * 向目标走一步，在一个时钟周期内完成的动作。
-     * @param target 目标位置。总是优先在8邻域内选择最接近的方向走过去。
+     * 2019年12月10日修改并重新启用：引入随机性。选中目标所示的方向有更大的概率，但并非确定的。
+     * @param target 目标生物所在位置。
      */
     public void aStepTowards(Position target){
         Position p=position.copy();
         Position.Direction dir=p.new Direction(target);
-        for(int i=0;i<16;i++){
-            if(/*passedMap.livingAt(dir.adjacentPosition())==null&&*/move(dir.dx(),dir.dy())){
-//                passedMap.addLiving(new PassedFlag(dir.adjacentPosition(),passedMap,game));
+        dir=p.new Direction(chooseDirection(dir.code()));
+        for(int i=0;i<8;i++){
+            if(move(dir.dx(),dir.dy())){
                 return;
             }
             else
                 dir.next();
         }
         System.out.println("No available step targeting at "+target+" for "+this);
+    }
+
+    /**
+     * 根据几何分布确定方向。
+     * @param d0 参考方向代码，0~7
+     * @return 目标方向代码，0~7
+     */
+    private int chooseDirection(int d0){
+        //在0-4之间确定一个偏移量
+        int c=random.nextInt(100);
+        int d;
+        if(c<30)//0.30
+            d=0;
+        else if(c<60)//0.15
+            d=1;
+        else if(c<80)//0.10
+            d=2;
+        else if(c<95)//0.075
+            d=3;
+        else//0.05
+            d=4;
+        if(d>=1&&d<=3){
+            if(random.nextBoolean())
+                return (d0+d)%8;
+            else
+                return (d0-d)%8;
+        }
+        return (d0+d)%8;
     }
 
     public void aRandomStep(){
@@ -325,8 +352,8 @@ public abstract class Living extends Thread implements Serializable {
             findEnemy();
         System.out.println("Living::run "+this+", enemy is "+enemy);
         if(enemy!=null)
-//            aStepTowards(enemy.getPosition());
-            aRandomStep();
+            aStepTowards(enemy.getPosition());
+//            aRandomStep();
         else
             aRandomStep();
         System.out.println("before check "+this);
