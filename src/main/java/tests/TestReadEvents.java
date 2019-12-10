@@ -1,7 +1,7 @@
 package tests;
 
-import calabashes.log.*;
-import calabashes.items.*;
+import top.xep0268.calabashes.log.*;
+
 import java.io.*;
 import java.util.Collections;
 import java.util.LinkedList;

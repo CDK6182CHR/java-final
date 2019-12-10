@@ -10,3 +10,4 @@ gen
 cases
 test_logs
 CalabashLogs/
+target/
