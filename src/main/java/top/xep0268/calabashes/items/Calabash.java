@@ -7,7 +7,8 @@ package top.xep0268.calabashes.items;
 import top.xep0268.calabashes.field.*;
 import top.xep0268.calabashes.Game;
 
-public class Calabash extends Living implements WithCalabash {
+@WithCalabash
+public class Calabash extends Living{
     private int order;
     private String color;
     public Calabash(Position pos, Field field_, Game game, int order_, String color_) {

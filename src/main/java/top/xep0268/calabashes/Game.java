@@ -138,8 +138,8 @@ public class Game implements Runnable{
                 field,this,6);
         System.out.println("after init");
         field.draw();
-        elder.embattleFormation(SnakeFormation.class);
-        snakeDemon.embattleFormation(ArrowFormation.class);
+        elder.embattleFormation(GooseFormation.class);
+        snakeDemon.embattleFormation(SwingFormation.class);
         field.draw();
     }
 
@@ -275,7 +275,7 @@ public class Game implements Runnable{
         activeLivings.add(living);
         living.start();
         ListView<String> lv;
-        if(living instanceof WithCalabash)
+        if(living.getClass().isAnnotationPresent(WithCalabash.class))
             lv=calabashList;
         else
             lv=demonList;
@@ -313,7 +313,8 @@ public class Game implements Runnable{
             String result;
             if(activeLivings.isEmpty())
                 result="平局";
-            else if(activeLivings.get(0) instanceof WithCalabash)
+            else if(activeLivings.get(0).getClass().
+                    isAnnotationPresent(WithCalabash.class))
                 result="葫芦娃胜!";
             else
                 result="妖精胜!";
@@ -380,7 +381,7 @@ public class Game implements Runnable{
 //        livingFutureMap.remove(living);
         deadLivings.add(living);
         ListView<String> lv;
-        if(living instanceof WithCalabash)
+        if(living.getClass().isAnnotationPresent(WithCalabash.class))
             lv=calabashList;
         else
             lv=demonList;

@@ -10,7 +10,8 @@ import top.xep0268.calabashes.field.Position;
 import top.xep0268.calabashes.formations.Formation;
 import top.xep0268.calabashes.formations.FormationHandler;
 
-public class ScorpionDemon extends Living implements Leader,WithDemon {
+@WithDemon
+public class ScorpionDemon extends Living implements Leader {
     private int followCount;
     private FollowDemon[] followDemons;
 

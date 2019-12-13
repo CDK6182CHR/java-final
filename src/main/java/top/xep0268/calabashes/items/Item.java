@@ -79,7 +79,7 @@ public abstract class Item extends Thread implements Serializable{
     /**
      * 移动到pos所示位置，如果指定位置不相邻，或者该位置的对象不可移动，则返回false。
      */
-    public boolean moveOrSwap(int dx,int dy){
+    public synchronized boolean moveOrSwap(int dx,int dy){
         assert abs(dx)<=1 && abs(dy)<=1;
         Position target=new Position(position.getX()+dx,position.getY()+dy);
         if(field.livingAt(target)==null)
@@ -143,7 +143,7 @@ public abstract class Item extends Thread implements Serializable{
             }
             direction.next();
         }
-        throw new PathNotFoundException(this,target);
+        throw new PathNotFoundException(this,target,passed);
     }
 
     /**
@@ -174,13 +174,13 @@ public abstract class Item extends Thread implements Serializable{
         //在0-4之间确定一个偏移量
         int c=random.nextInt(100);
         int d;
-        if(c<30)//0.30
+        if(c<20)//0.20
             d=0;
-        else if(c<60)//0.15
+        else if(c<50)//0.15
             d=1;
-        else if(c<80)//0.10
+        else if(c<75)//0.125
             d=2;
-        else if(c<95)//0.075
+        else if(c<95)//0.10
             d=3;
         else//0.05
             d=4;

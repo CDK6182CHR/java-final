@@ -44,4 +44,9 @@ public class LogicalItem extends Item {
     public String livingName() {
         return toString();
     }
+
+    @Override
+    public boolean exchangeable(){
+        return true;
+    }
 }

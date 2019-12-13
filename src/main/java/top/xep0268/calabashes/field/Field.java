@@ -88,8 +88,8 @@ public class Field<T extends Block> {
      * @param position
      */
     private void removeLiving(Position position){
-        System.out.println("Field::removeLiving "+position
-                +", living="+livingAt(position));
+//        System.out.println("Field::removeLiving "+position
+//                +", living="+livingAt(position));
 //        map[position.getY()][position.getX()].removeLiving();
         map.get(position.getY()).get(position.getX()).removeLiving();
     }

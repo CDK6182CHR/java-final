@@ -1,8 +1,8 @@
 package top.xep0268.calabashes.items;
 
-/**
- * 声明性质接口，没有方法定义。
- * 表示站在葫芦娃一边。
- */
-public interface WithCalabash {
+import java.lang.annotation.*;
+
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface WithCalabash {
 }

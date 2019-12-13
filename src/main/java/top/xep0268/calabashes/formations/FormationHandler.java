@@ -18,6 +18,7 @@ public class FormationHandler <T extends Formation>{
     private T formation;
     private Item leader;
     private Item[] followers;
+    @SuppressWarnings("unchecked")
     public FormationHandler(Field field, Item leader,
                             Item[] followers, Class<T> formType){
         this.field=field;
@@ -50,7 +51,7 @@ public class FormationHandler <T extends Formation>{
                 System.out.println(
                         "Cannot format as "+toString()+" due to "+e);
                 NoSpaceForFormationException n=
-                        new NoSpaceForFormationException(formation);
+                        new NoSpaceForFormationException(formation,e.getPassed());
                 n.initCause(e);
                 throw n;
             }
@@ -76,13 +77,14 @@ public class FormationHandler <T extends Formation>{
      * 从scorpionDemon移植过来。
      * 寻找适合布阵的leader位置。
      */
+    @SuppressWarnings("unchecked")
     protected void findPlace() throws NoSpaceForFormationException {
         Field passed=new Field<Block>(Block.class);
         for(Item l:followers){
             l.setMovable(true);
         }
         if(! findPlace(passed))
-            throw new NoSpaceForFormationException(formation);
+            throw new NoSpaceForFormationException(formation,passed);
     }
 
     private boolean findPlace(Field passed) {
@@ -90,7 +92,7 @@ public class FormationHandler <T extends Formation>{
             return true;
         Position position=leader.getPosition();
         passed.addLiving(new PassedFlag(position.copy(),passed));
-        Position.Direction dir=position.new Direction(Position.Direction.S);
+        Position.Direction dir=position.new Direction(Position.Direction.E);
         Position p;
         for(int i=0;i<8;i++){
             p=dir.adjacentPosition();

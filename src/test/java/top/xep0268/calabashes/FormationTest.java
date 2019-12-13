@@ -1,14 +1,13 @@
 package top.xep0268.calabashes;
 
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.internal.runners.statements.Fail;
 import top.xep0268.calabashes.exceptions.NoSpaceForFormationException;
 import top.xep0268.calabashes.field.Block;
 import top.xep0268.calabashes.field.Field;
 import top.xep0268.calabashes.field.Position;
-import top.xep0268.calabashes.formations.ArrowFormation;
-import top.xep0268.calabashes.formations.Formation;
-import top.xep0268.calabashes.formations.FormationHandler;
-import top.xep0268.calabashes.formations.SnakeFormation;
+import top.xep0268.calabashes.formations.*;
 import top.xep0268.calabashes.items.Item;
 import top.xep0268.calabashes.items.Leader;
 
@@ -34,12 +33,15 @@ public class FormationTest {
                 throws NoSpaceForFormationException {
             FormationHandler<T> handler=new FormationHandler<>(
                     field,this,items,formType);
-            handler.embattle();
+            synchronized (this) {
+                handler.embattle();
+            }
         }
     }
 
     private Field<Block<Item>> field=new Field(Block.class);
-    private LogicalLeader leader=new LogicalLeader(new Position(1,1),field,"L");
+    private LogicalLeader leader=new LogicalLeader(new Position(1,1),
+            field,"L");
 
     @Test
     public void testSnake() throws NoSpaceForFormationException{
@@ -49,8 +51,32 @@ public class FormationTest {
 
     @Test
     public void testArrow()throws Exception{
-        leader.walkTowards(new Position(4,5));
-        leader.embattleFormation(ArrowFormation.class);
+//        leader.walkTowards(new Position(4,5));
+        try {
+            leader.embattleFormation(ArrowFormation.class);
+        }catch (NoSpaceForFormationException e){
+            e.printStackTrace();
+            Field<Block<?>> passed=e.getPassed();
+            if(passed!=null){
+                System.out.println("passed map is");
+                passed.draw();
+            }
+            System.out.println("field map is");
+            field.draw();
+            System.exit(65);
+        }
+        field.draw();
+    }
+
+    @Test
+    public void testSwing() throws NoSpaceForFormationException{
+        leader.embattleFormation(SwingFormation.class);
+        field.draw();
+    }
+
+    @Test
+    public void testGoose()throws NoSpaceForFormationException{
+        leader.embattleFormation(GooseFormation.class);
         field.draw();
     }
 }
