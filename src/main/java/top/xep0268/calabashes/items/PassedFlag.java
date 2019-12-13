@@ -8,8 +8,8 @@ public class PassedFlag extends Item {
         number=0;
     }
     private int order;
-    public PassedFlag(Position pos, Field field_, Game game_) {
-        super(pos, field_, game_);
+    public PassedFlag(Position pos, Field field_) {
+        super(pos, field_);
         order=number++;
     }
 
@@ -19,6 +19,16 @@ public class PassedFlag extends Item {
                 "PassedFlag does not support graphics operations."
         );
 //        return "/1.jpg";
+    }
+
+    @Override
+    protected void findEnemy() {
+
+    }
+
+    @Override
+    protected void checkEnemyToAttack() {
+
     }
 
     @Override

@@ -2,25 +2,23 @@ package top.xep0268.calabashes;
 
 import org.junit.*;
 import static org.junit.Assert.*;
+
+import top.xep0268.calabashes.exceptions.PathNotFoundException;
 import top.xep0268.calabashes.items.*;
 import top.xep0268.calabashes.field.*;
 
+@SuppressWarnings("unchecked")
 public class LivingTest{
-    private Game game;
-    private BattleField field;
-    private Item c1,c2;
+    private LogicalItem item1,item2;
+    private Field<Block<LogicalItem>> field
+            =new Field(Block.class);
+
     @Before
     public void initFormation(){
-        game=Game.getInstance();
-        field=BattleField.getInstance();
-        c1=new Calabash(
-                new Position(1,1),field,game,1,"红"
-        );
-        field.addLiving(c1);
-        c2=new Calabash(
-                new Position(1,2),field,game,2,"橙"
-        );
-        field.addLiving(c2);
+        item1=new LogicalItem(new Position(1,1),field,"1");
+        item2=new LogicalItem(new Position(1,2),field,"2");
+        field.addLiving(item1);
+        field.addLiving(item2);
     }
 
     /**
@@ -28,8 +26,24 @@ public class LivingTest{
      */
     @Test
     public void testMove(){
-        assertTrue(c1.move(1,0));
-        assertTrue(c1.getPosition().equals(new Position(2,1)));
-        assertFalse(c2.move(1,-1));
+        field.draw();
+        assertTrue(item1.move(1,0));
+        assertTrue(item1.getPosition().equals(new Position(2,1)));
+        assertFalse(item2.move(1,-1));
+        field.draw();
+    }
+
+    /**
+     * 测试寻路算法
+     * @throws PathNotFoundException this would not be thrown
+     */
+    @Test
+    public void testWalk()throws PathNotFoundException {
+        Position p=new Position(5,6);
+        item1.walkTowards(p);
+        assertEquals(item1.getPosition(), p);
+        Position p1=new Position(6,3);
+        item2.walkTowards(p1);
+        assertEquals(item2.getPosition(),p1);
     }
 }

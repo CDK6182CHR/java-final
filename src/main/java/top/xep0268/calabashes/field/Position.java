@@ -132,8 +132,12 @@ public class Position implements Serializable {
         return abs(another.x-x)<=1 && abs(another.y-y)<=1;
     }
 
-    public boolean equals(Position another){
-        return another.x==x && another.y==y;
+    @Override
+    public boolean equals(Object another){
+        if(!(another instanceof Position))
+            return false;
+        Position an=(Position)another;
+        return an.x==x && an.y==y;
     }
 
     public String toString(){

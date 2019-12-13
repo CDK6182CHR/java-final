@@ -1,5 +1,4 @@
 package top.xep0268.calabashes.field;
-import top.xep0268.calabashes.Game;
 import top.xep0268.calabashes.items.Item;
 
 import java.util.*;
@@ -70,6 +69,7 @@ public class Field<T extends Block> {
      * 如果成功，修改living中的数据为x,y指定的位置。
      * 否则不做任何操作并返回false。
      */
+    @SuppressWarnings("unchecked")
     private boolean addLiving(Item living, int x, int y){
         if(livingAt(x,y)!=null)
             return false;
@@ -128,7 +128,7 @@ public class Field<T extends Block> {
         assert livingAt(living.getPosition())==living;
 //        System.out.println("moveLiving: "+living+" "+oldPosition+" -> "
 //        +"("+nx+","+ny+")");
-        if(!Game.getInstance().isInVideo())
+        if(living.isInVideo())
             try {
                 TimeUnit.MILLISECONDS.sleep(2);
             }catch (InterruptedException e){

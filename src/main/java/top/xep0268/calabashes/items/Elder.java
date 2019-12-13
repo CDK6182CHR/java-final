@@ -9,7 +9,7 @@ import top.xep0268.calabashes.field.*;
 import top.xep0268.calabashes.formations.Formation;
 import top.xep0268.calabashes.formations.FormationHandler;
 
-public class Elder extends Item implements Leader,WithCalabash{
+public class Elder extends Living implements Leader,WithCalabash{
     private Calabash[] calabashes;
 
     /*

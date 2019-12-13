@@ -37,7 +37,7 @@ public class Game implements Runnable{
 
     private boolean executing=false;
 
-    private List<Item>
+    private List<Living>
             activeLivings=new ArrayList<>(),
             deadLivings=new ArrayList<>();
     public volatile long startTime;//记录按下空格键的时间
@@ -191,7 +191,7 @@ public class Game implements Runnable{
     }
 
     private void loadLiving(LivingCreatedEvent event){
-        Item living=event.getSubject();
+        Living living=event.getSubject();
         living.setInVideo(field,this);
         System.out.println("Living created: "+living+" @ "+event.getPosition()+
                 "timestamp: "+event.getTimeStamp());
@@ -224,11 +224,11 @@ public class Game implements Runnable{
         scheduler.schedule(new Runnable() {
             @Override
             public void run() {
-                Item killer=event.getSubject();
-                Item killee=event.getObject();
+                Living killer=event.getSubject();
+                Living victim=event.getObject();
 //                assert killer.getPosition().adjacentWith(killee.getPosition());
-                livingDies(killee);
-                showKillEvent(killer,killee);
+                livingDies(victim);
+                showKillEvent(killer,victim);
             }
         },event.getTimeStamp()-currentTimeStamp(),TimeUnit.MILLISECONDS);
     }
@@ -258,19 +258,19 @@ public class Game implements Runnable{
         }
         //启动线程
         startLivingThread(elder);
-        for(Item l:elder.getCalabashes())
+        for(Living l:elder.getCalabashes())
             startLivingThread(l);
         startLivingThread(snakeDemon);
         ScorpionDemon scorpionDemon=snakeDemon.getScorpionDemon();
         startLivingThread(scorpionDemon);
-        for(Item l:scorpionDemon.getFollowDemons())
+        for(Living l:scorpionDemon.getFollowDemons())
             startLivingThread(l);
         scheduler.scheduleAtFixedRate(this,40,
                 INTERVAL,TimeUnit.MILLISECONDS);
         scheduler.scheduleAtFixedRate(judgeHandler,50,INTERVAL/2,TimeUnit.MILLISECONDS);
     }
 
-    private void startLivingThread(Item living){
+    private void startLivingThread(Living living){
         living.setMovable(false);
         activeLivings.add(living);
         living.start();
@@ -347,7 +347,7 @@ public class Game implements Runnable{
     /**
      * 实质上只是加到队列里
      */
-    public void decide(Item living1, Item living2){
+    public void decide(Living living1, Living living2){
 //        blockingQueue.add(new Judger(living1,living2));
 //        commitDecide();
 //        notifyAll();
@@ -371,7 +371,7 @@ public class Game implements Runnable{
     /**
      * 生物体死亡，移动引用，并停止线程
      */
-    public synchronized void livingDies(Item living){
+    public synchronized void livingDies(Living living){
         living.die();
         boolean flag=activeLivings.remove(living);
         assert flag;  //如果assert failed，则表明线程冲突

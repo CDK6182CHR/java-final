@@ -8,10 +8,6 @@ import top.xep0268.calabashes.field.Block;
 import top.xep0268.calabashes.field.Field;
 import top.xep0268.calabashes.Game;
 import top.xep0268.calabashes.field.Position;
-import top.xep0268.calabashes.log.LivingMoveEvent;
-import javafx.application.Platform;
-import javafx.scene.image.*;
-import javafx.scene.layout.*;
 
 import java.io.Serializable;
 import java.util.*;
@@ -24,43 +20,19 @@ import static java.lang.Math.abs;
  * 为了分离对Game的依赖添加本类。
  * 将对图形部分的支持移动到Living子类中。
  */
-public abstract class Item extends Thread{
+public abstract class Item extends Thread implements Serializable{
     protected transient Field field;
     protected final Position position;//此对象不可变
     protected boolean movable,active=true;
     protected Item enemy;  //锁定的攻击目标
-    protected transient Game game;
-    private transient Pane img;//采用懒构造模式
-    private transient ImageView view;
     public transient int timeStamp=0;
     private boolean inVideo=false;//是否在回放模式
-//    private transient ScheduledExecutorService scheduler;
     private static Random random=new Random();
 
-    public Item(Position pos, Field field_, Game game_){
+    public Item(Position pos, Field field_){
         position=pos.copy();
         field=field_;
         movable=true;
-        game=game_;
-    }
-
-    public Pane getImg(){
-        if(img==null){
-            synchronized (this) {
-                System.out.println("makeImg " + this);
-                img = new AnchorPane();
-                view = new ImageView(
-                        String.valueOf(getClass().getResource(getResourceName())));
-                view.setFitHeight(60);
-                view.setFitWidth(60);
-                img.getChildren().add(view);
-//            img.setBackground(new Background(new BackgroundImage(new Image(
-//                    String.valueOf(getClass().getResource(getResourceName()))
-//            ),BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,null,BackgroundSize.DEFAULT
-//            )));
-            }
-        }
-        return img;
     }
 
     protected abstract String getResourceName();
@@ -85,16 +57,10 @@ public abstract class Item extends Thread{
      * 返回移动是否成功。如果目标位置被占用，则移动失败。
      */
     public synchronized boolean move(int dx,int dy){
-        System.out.println("enter Living::move "+this);
+//        System.out.println("enter Living::move "+this);
         assert abs(dx)<=1 && abs(dy)<=1;
-        Position oldPosition=position.copy();
         boolean flag = field.moveLiving(this,dx,dy);
-        System.out.println("exit Living::move "+this);
-        if(timeStamp>0&&flag){
-            game.getEventWriter().write(new LivingMoveEvent(
-                    this,position,game.currentTimeStamp(),oldPosition
-            ));
-        }
+//        System.out.println("exit Living::move "+this);
         return flag;
     }
 
@@ -151,7 +117,7 @@ public abstract class Item extends Thread{
         Position.Direction direction=position.new Direction(target);
         Position toMove;
         //首先将当前位置标记为走过
-        Item flag=new top.xep0268.calabashes.items.PassedFlag(position,passed,game);
+        Item flag=new top.xep0268.calabashes.items.PassedFlag(position,passed);
         passed.addLiving(flag);
         for(int i=0;i<8;i++){
             toMove=direction.adjacentPosition();
@@ -251,10 +217,7 @@ public abstract class Item extends Thread{
     /**
      * 寻找攻击对象。
      */
-    protected void findEnemy(){
-//        passedMap.clearLivings();
-        enemy=game.findEnemyFor(this);
-    }
+    protected abstract void findEnemy();
 
     /**
      * 检查周围是否存在敌人。
@@ -266,39 +229,7 @@ public abstract class Item extends Thread{
      * 或许不应该是中心化的判断？
      * 【目标】应该是让两个正在判断的生物进入线程锁定状态。如何实现？
      */
-    private void checkEnemyToAttack(){
-        Position p=position.copy();
-        Position.Direction dir=p.new Direction(p);  //随机方向
-//        PositionLoop:
-        for (int i = 0; i < 8; i++, dir.next()) {
-            System.out.println("checkEnemyToAttack on "+this+": "+i+", "+dir);
-            Position pos=dir.adjacentPosition();
-            System.out.println("adjacent position is "+pos);
-            Item living = field.livingAt(pos);//确定这个导致线程死掉
-            System.out.println("checkEnemyToAttack on "+this+": "+i+", "+living);
-            if (living != null && living.isActive()&&isAttackable(living)) {
-                System.out.println("checkEnemyToAttack: loop on "+this+", "+living);
-                //                        while (lock.isLocked()) {
-//                            System.out.println("before-wait in Living"+this);
-//                            condition.await(20,TimeUnit.MILLISECONDS);
-//                            System.out.println("after-wait in Living "+this);
-//                            if(lock.isLocked()){
-//                                System.out.println("release this forcely "+this);
-//                                continue PositionLoop;
-//                            }
-//                        }
-//                        System.out.println("wait in Living over "+this);
-//                        lock.lock();
-                game.decide(this, living);
-//                    }catch (InterruptedException e){ //代表死亡
-//                        System.out.println("interrupted in Living "+this);
-//                        return;
-                if (!active)
-                    return;
-            }
-        }
-//            dir.aStep();//这是个死循环！！艹
-    }
+    protected abstract void checkEnemyToAttack();
 
     /**
      * 判断指定的生物是否是活的敌人
@@ -377,9 +308,6 @@ public abstract class Item extends Thread{
         active=false;
         interrupt();
         System.out.println(this.toString()+" died");
-        Platform.runLater(() -> {
-            view.setImage(new Image(String.valueOf(getClass().getResource(getResourceName()))));
-        });
     }
 
     public int getTimeStamp(){
@@ -389,10 +317,9 @@ public abstract class Item extends Thread{
     /**
      * 设置为回放模式，且不可恢复
      */
-    public void setInVideo(Field field,Game game){
+    public void setInVideo(Field field){
         inVideo=true;
         this.field=field;
-        this.game=game;
 //        scheduler=Executors.newScheduledThreadPool(200);
     }
 
@@ -418,4 +345,8 @@ public abstract class Item extends Thread{
 //            }
 //        },time*Game.INTERVAL,TimeUnit.MILLISECONDS);
 //    }
+
+    public boolean isInVideo(){
+        return inVideo;
+    }
 }

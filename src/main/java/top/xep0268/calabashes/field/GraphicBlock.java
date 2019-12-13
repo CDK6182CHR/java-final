@@ -4,13 +4,14 @@ import top.xep0268.calabashes.items.Item;
 import javafx.application.Platform;
 import javafx.scene.layout.*;
 import javafx.scene.paint.*;
+import top.xep0268.calabashes.items.Living;
 
 /**
  * 2019.12.06添加
  * 图形化单元格。
  * 将单元格中与<code>Pane</code>相关的部分抽离出来。
  */
-public class GraphicBlock extends Block {
+public class GraphicBlock extends Block<Living> {
     private Pane grid;
     private static final Color
             EVEN_COLOR=Color.color(0.6,0.6,0.6),
@@ -25,7 +26,7 @@ public class GraphicBlock extends Block {
     }
 
     @Override
-    public synchronized boolean setLiving(Item living){
+    public synchronized boolean setLiving(Living living){
         boolean flag=super.setLiving(living);
         if(flag)
             Platform.runLater(new Runnable() {

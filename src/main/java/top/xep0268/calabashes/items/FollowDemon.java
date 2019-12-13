@@ -7,7 +7,7 @@ import top.xep0268.calabashes.Game;
 import top.xep0268.calabashes.field.Position;
 import top.xep0268.calabashes.field.Field;
 
-public class FollowDemon extends Item implements WithDemon{
+public class FollowDemon extends Living implements WithDemon{
     private int order;
 
     public FollowDemon(Position pos, Field field_, Game game,int order) {

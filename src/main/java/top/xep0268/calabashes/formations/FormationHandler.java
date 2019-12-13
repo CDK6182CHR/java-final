@@ -89,7 +89,7 @@ public class FormationHandler <T extends Formation>{
         if(ready())
             return true;
         Position position=leader.getPosition();
-        passed.addLiving(new PassedFlag(position.copy(),passed, Game.getInstance()));
+        passed.addLiving(new PassedFlag(position.copy(),passed));
         Position.Direction dir=position.new Direction(Position.Direction.S);
         Position p;
         for(int i=0;i<8;i++){
