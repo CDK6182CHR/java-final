@@ -9,7 +9,7 @@ import top.xep0268.calabashes.field.*;
 import top.xep0268.calabashes.formations.Formation;
 import top.xep0268.calabashes.formations.FormationHandler;
 
-public class Elder extends Living implements Leader,WithCalabash{
+public class Elder extends Item implements Leader,WithCalabash{
     private Calabash[] calabashes;
 
     /*
@@ -103,8 +103,8 @@ public class Elder extends Living implements Leader,WithCalabash{
     }
 
     @Override
-    public boolean isAttackable(Living living) {
-        Class<? extends Living> cls=living.getClass();
+    public boolean isAttackable(Item living) {
+        Class<? extends Item> cls=living.getClass();
         return cls==ScorpionDemon.class||cls==SnakeDemon.class||cls==FollowDemon.class;
     }
 

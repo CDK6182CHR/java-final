@@ -7,7 +7,7 @@ import top.xep0268.calabashes.field.Field;
 import top.xep0268.calabashes.field.Position;
 import top.xep0268.calabashes.formations.*;
 
-public class SnakeDemon extends Living implements Leader, WithDemon{
+public class SnakeDemon extends Item implements Leader, WithDemon{
     private ScorpionDemon scorpionDemon;
 
     public SnakeDemon(Position pos, Field field_, Game game_, int followCount_) {
@@ -40,8 +40,8 @@ public class SnakeDemon extends Living implements Leader, WithDemon{
     }
 
     @Override
-    public boolean isAttackable(Living living) {
-        Class<? extends Living> cls=living.getClass();
+    public boolean isAttackable(Item living) {
+        Class<? extends Item> cls=living.getClass();
         return cls==Calabash.class || cls==Elder.class;
     }
 

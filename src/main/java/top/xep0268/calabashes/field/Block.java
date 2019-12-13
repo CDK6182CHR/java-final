@@ -1,12 +1,12 @@
 package top.xep0268.calabashes.field;
 
-import top.xep0268.calabashes.items.Living;
+import top.xep0268.calabashes.items.Item;
 
 /**
  * Field上的一个地块，可以承载至多一个Living。
  */
 public class Block {
-    protected Living living;
+    protected Item living;
     private final int x,y;  //blank final
 
     //package-access
@@ -19,7 +19,7 @@ public class Block {
         return living!=null;
     }
 
-    public synchronized boolean setLiving(Living l){
+    public synchronized boolean setLiving(Item l){
 //        System.out.println("Enter Block::setLiving ("+x+", "+y+")");
         if(living!=null) {
             System.out.println("Exit Block::setLiving false ("+x+", "+y+")");
@@ -38,7 +38,7 @@ public class Block {
 //        }
     }
 
-    public synchronized Living getLiving(){
+    public synchronized Item getLiving(){
         return living;
     }
 

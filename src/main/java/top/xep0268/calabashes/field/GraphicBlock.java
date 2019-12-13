@@ -1,6 +1,6 @@
 package top.xep0268.calabashes.field;
 
-import top.xep0268.calabashes.items.Living;
+import top.xep0268.calabashes.items.Item;
 import javafx.application.Platform;
 import javafx.scene.layout.*;
 import javafx.scene.paint.*;
@@ -25,7 +25,7 @@ public class GraphicBlock extends Block {
     }
 
     @Override
-    public synchronized boolean setLiving(Living living){
+    public synchronized boolean setLiving(Item living){
         boolean flag=super.setLiving(living);
         if(flag)
             Platform.runLater(new Runnable() {

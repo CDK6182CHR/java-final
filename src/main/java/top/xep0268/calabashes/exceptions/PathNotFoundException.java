@@ -1,11 +1,11 @@
 package top.xep0268.calabashes.exceptions;
-import top.xep0268.calabashes.items.Living;
+import top.xep0268.calabashes.items.Item;
 import top.xep0268.calabashes.field.Position;
 
 public class PathNotFoundException extends Exception {
-    private Living obj;
+    private Item obj;
     private Position to;
-    public PathNotFoundException(Living item,Position to){
+    public PathNotFoundException(Item item, Position to){
         obj=item;
         this.to=to;
     }

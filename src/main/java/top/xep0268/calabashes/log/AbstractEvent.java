@@ -1,7 +1,7 @@
 package top.xep0268.calabashes.log;
 
 import top.xep0268.calabashes.field.Position;
-import top.xep0268.calabashes.items.Living;
+import top.xep0268.calabashes.items.Item;
 
 import java.io.Serializable;
 
@@ -25,10 +25,10 @@ import java.io.Serializable;
  * </ul>
  */
 public abstract class AbstractEvent implements Serializable,Comparable<AbstractEvent> {
-    Living subject; //主体生物
+    Item subject; //主体生物
     Position position;
     private volatile long timeStamp;
-    AbstractEvent(Living subject, Position position, long timeStamp){
+    AbstractEvent(Item subject, Position position, long timeStamp){
         this.subject =subject;
         this.position =position.copy();
         this.timeStamp=timeStamp;
@@ -38,7 +38,7 @@ public abstract class AbstractEvent implements Serializable,Comparable<AbstractE
         return timeStamp;
     }
 
-    public Living getSubject(){
+    public Item getSubject(){
         return subject;
     }
 

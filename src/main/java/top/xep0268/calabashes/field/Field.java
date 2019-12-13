@@ -1,13 +1,13 @@
 package top.xep0268.calabashes.field;
 import top.xep0268.calabashes.Game;
-import top.xep0268.calabashes.items.Living;
+import top.xep0268.calabashes.items.Item;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
- * N*N的场地。
- * 先行后列。x为横坐标。访问格式为map[x][y].
+ * M*N的场地。
+ * 先行后列。x为横坐标。访问格式为map[y][x]
  *
  * 死循环问题：
  * 1. 每个线程无法结束的情况
@@ -22,14 +22,6 @@ import java.util.concurrent.TimeUnit;
  *
  * 2019.12.06：改为泛型, 泛型参数为Block的类型。
  * 使用反射方式做Block数组和实例化。
- *
- * 移动失败问题：
- * 考虑将CreatedEvent也处理成scheduled。
- * 2019.12.06最后笔记：考虑重新规范一下写入的情况，还是由调用的地方计算时间戳。
- *
- * todo: 循环问题
- * 1. 结束后重新开始；
- * 2. 禁止中间重新开始或者读取。
  */
 public class Field<T extends Block> {
     public static final int M=12,N=15;  //M行, N列
@@ -64,7 +56,7 @@ public class Field<T extends Block> {
     /*
      * 按Living指定的位置添加。用于初始化。
      */
-    public boolean addLiving(Living living){
+    public boolean addLiving(Item living){
         if(livingAt(living.getPosition())!=null)
             return false;
         int x=living.getPosition().getX(),y=living.getPosition().getY();
@@ -78,7 +70,7 @@ public class Field<T extends Block> {
      * 如果成功，修改living中的数据为x,y指定的位置。
      * 否则不做任何操作并返回false。
      */
-    private boolean addLiving(Living living, int x, int y){
+    private boolean addLiving(Item living, int x, int y){
         if(livingAt(x,y)!=null)
             return false;
 //        map[y][x].setLiving(living);
@@ -87,7 +79,7 @@ public class Field<T extends Block> {
         return true;
     }
 
-    public boolean addLiving(Living living, Position pos){
+    public boolean addLiving(Item living, Position pos){
         return addLiving(living,pos.getX(),pos.getY());
     }
 
@@ -102,14 +94,14 @@ public class Field<T extends Block> {
         map.get(position.getY()).get(position.getX()).removeLiving();
     }
 
-    public Living livingAt(Position pos){
+    public Item livingAt(Position pos){
         if(inside(pos))
 //            return map[pos.getY()][pos.getX()].getLiving();
             return map.get(pos.getY()).get(pos.getX()).getLiving();
         return null;
     }
 
-    private Living livingAt(int x, int y){
+    private Item livingAt(int x, int y){
 //        return map[y][x].getLiving();
         return map.get(y).get(x).getLiving();
     }
@@ -122,7 +114,7 @@ public class Field<T extends Block> {
      *
      * 2019.11.27补充--此方法只能由living主动调用，Living.move()是同步方法，所以是线程安全的。
      */
-    public synchronized boolean moveLiving(Living living, int dx, int dy){
+    public synchronized boolean moveLiving(Item living, int dx, int dy){
         //保证两边的数据一致
         assert livingAt(living.getPosition())==living;
         int nx=living.getPosition().getX()+dx;
@@ -148,7 +140,7 @@ public class Field<T extends Block> {
     /*
      * 交换两指定生物的位置，由Living调用，且已经保证位置相邻。
      */
-    public boolean swapLiving(Living living1, Living living2){
+    public boolean swapLiving(Item living1, Item living2){
         assert livingAt(living1.getPosition())==living1;
         assert livingAt(living2.getPosition())==living2;
         if(!living1.getPosition().adjacentWith(living2.getPosition()))
@@ -178,7 +170,7 @@ public class Field<T extends Block> {
         for(int i=0;i<M;i++){
             System.out.print(""+i+'\t');
             for(int j=0;j<N;j++) {
-                Living l = livingAt(j,i);
+                Item l = livingAt(j,i);
                 if(l!=null)
                     System.out.print(l.toString());
                 System.out.print('\t');

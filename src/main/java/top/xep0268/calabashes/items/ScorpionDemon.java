@@ -10,7 +10,7 @@ import top.xep0268.calabashes.field.Position;
 import top.xep0268.calabashes.formations.Formation;
 import top.xep0268.calabashes.formations.FormationHandler;
 
-public class ScorpionDemon extends Living implements Leader,WithDemon {
+public class ScorpionDemon extends Item implements Leader,WithDemon {
     private int followCount;
     private FollowDemon[] followDemons;
 
@@ -47,8 +47,8 @@ public class ScorpionDemon extends Living implements Leader,WithDemon {
     }
 
     @Override
-    public boolean isAttackable(Living living) {
-        Class<? extends Living> cls=living.getClass();
+    public boolean isAttackable(Item living) {
+        Class<? extends Item> cls=living.getClass();
         return cls==Calabash.class || cls==Elder.class;
     }
 

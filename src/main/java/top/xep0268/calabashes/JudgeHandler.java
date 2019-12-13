@@ -1,6 +1,6 @@
 package top.xep0268.calabashes;
 
-import top.xep0268.calabashes.items.Living;
+import top.xep0268.calabashes.items.Item;
 
 import java.util.concurrent.*;
 import java.util.*;
@@ -44,7 +44,7 @@ public class JudgeHandler implements Runnable {
 //        System.out.println("Exiting JudgeHandler::run()");
     }
 
-    public void addJudgeTask(Living living1, Living living2){
+    public void addJudgeTask(Item living1, Item living2){
         long tm=System.currentTimeMillis();
         Judger judger=new Judger(living1, living2);
         System.out.println("addJudgeTask entered "+judger);

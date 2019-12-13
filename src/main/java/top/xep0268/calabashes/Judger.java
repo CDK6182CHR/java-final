@@ -2,15 +2,15 @@ package top.xep0268.calabashes;
 
 import top.xep0268.calabashes.field.Field;
 import top.xep0268.calabashes.field.Position;
-import top.xep0268.calabashes.items.Living;
+import top.xep0268.calabashes.items.Item;
 import top.xep0268.calabashes.log.KillEvent;
 
 import static java.lang.Math.*;
 
 public class Judger{
-    private Living living1,living2;
+    private Item living1,living2;
     private Game game=Game.getInstance();
-    public Judger(Living l1,Living l2){
+    public Judger(Item l1, Item l2){
         living1=l1;
         living2=l2;
     }
@@ -38,7 +38,7 @@ public class Judger{
      * @param living1 主调者
      * @param living2 被调者
      */
-    private void decide(Living living1, Living living2){
+    private void decide(Item living1, Item living2){
         if(!living1.isActive()||!living2.isActive())
             return;
         System.out.println("decide called by " + living1 + " with " + living2);
@@ -49,7 +49,7 @@ public class Judger{
         }
     }
 
-    private void commitKill(Living killer,Living victim){
+    private void commitKill(Item killer, Item victim){
         game.showKillEvent(killer, victim);
         game.getEventWriter().write(new KillEvent(
                 killer,killer.getPosition(),game.currentTimeStamp(),victim

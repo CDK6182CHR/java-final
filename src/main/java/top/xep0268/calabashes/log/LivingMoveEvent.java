@@ -1,12 +1,12 @@
 package top.xep0268.calabashes.log;
 
 import top.xep0268.calabashes.field.Position;
-import top.xep0268.calabashes.items.Living;
+import top.xep0268.calabashes.items.Item;
 
 public class LivingMoveEvent extends AbstractEvent {
     private Position oldPosition;
-    public LivingMoveEvent(Living subject, Position position,long timeStamp,
-                    Position oldPosition) {
+    public LivingMoveEvent(Item subject, Position position, long timeStamp,
+                           Position oldPosition) {
         super(subject, position, timeStamp);
         this.oldPosition=oldPosition;
     }

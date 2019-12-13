@@ -7,7 +7,7 @@ package top.xep0268.calabashes.items;
 import top.xep0268.calabashes.field.*;
 import top.xep0268.calabashes.Game;
 
-public class Calabash extends Living implements WithCalabash {
+public class Calabash extends Item implements WithCalabash {
     private int order;
     private String color;
     public Calabash(Position pos, Field field_, Game game, int order_, String color_) {
@@ -30,8 +30,8 @@ public class Calabash extends Living implements WithCalabash {
     }
 
     @Override
-    public boolean isAttackable(Living living) {
-        Class<? extends Living> cls=living.getClass();
+    public boolean isAttackable(Item living) {
+        Class<? extends Item> cls=living.getClass();
         return cls==ScorpionDemon.class||cls==SnakeDemon.class||cls==FollowDemon.class;
     }
 

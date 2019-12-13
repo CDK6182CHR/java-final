@@ -9,17 +9,17 @@ import top.xep0268.calabashes.exceptions.PathNotFoundException;
 import top.xep0268.calabashes.field.Block;
 import top.xep0268.calabashes.field.Position;
 import top.xep0268.calabashes.field.Field;
-import top.xep0268.calabashes.items.Living;
+import top.xep0268.calabashes.items.Item;
 import top.xep0268.calabashes.items.PassedFlag;
 import java.lang.reflect.*;
 
 public class FormationHandler <T extends Formation>{
     private Field field;
     private T formation;
-    private Living leader;
-    private Living[] followers;
-    public FormationHandler(Field field, Living leader,
-                            Living[] followers, Class<T> formType){
+    private Item leader;
+    private Item[] followers;
+    public FormationHandler(Field field, Item leader,
+                            Item[] followers, Class<T> formType){
         this.field=field;
         this.leader=leader;
         this.followers=followers;
@@ -78,7 +78,7 @@ public class FormationHandler <T extends Formation>{
      */
     protected void findPlace() throws NoSpaceForFormationException {
         Field passed=new Field<Block>(Block.class);
-        for(Living l:followers){
+        for(Item l:followers){
             l.setMovable(true);
         }
         if(! findPlace(passed))

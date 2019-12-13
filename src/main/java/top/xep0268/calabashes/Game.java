@@ -37,7 +37,7 @@ public class Game implements Runnable{
 
     private boolean executing=false;
 
-    private List<Living>
+    private List<Item>
             activeLivings=new ArrayList<>(),
             deadLivings=new ArrayList<>();
     public volatile long startTime;//记录按下空格键的时间
@@ -115,7 +115,7 @@ public class Game implements Runnable{
         }
     }
 
-    public void showKillEvent(Living living1,Living living2){
+    public void showKillEvent(Item living1, Item living2){
         String s=living1.livingName()+" kills "+living2.livingName()+" on "+currentTimeStamp();
         Platform.runLater(()-> listView.getItems().add(s));
     }
@@ -191,7 +191,7 @@ public class Game implements Runnable{
     }
 
     private void loadLiving(LivingCreatedEvent event){
-        Living living=event.getSubject();
+        Item living=event.getSubject();
         living.setInVideo(field,this);
         System.out.println("Living created: "+living+" @ "+event.getPosition()+
                 "timestamp: "+event.getTimeStamp());
@@ -204,7 +204,7 @@ public class Game implements Runnable{
     }
 
     private void scheduleMove(LivingMoveEvent event){
-        Living living=event.getSubject();
+        Item living=event.getSubject();
         scheduler.schedule(new Runnable() {
             @Override
             public void run() {
@@ -224,8 +224,8 @@ public class Game implements Runnable{
         scheduler.schedule(new Runnable() {
             @Override
             public void run() {
-                Living killer=event.getSubject();
-                Living killee=event.getObject();
+                Item killer=event.getSubject();
+                Item killee=event.getObject();
 //                assert killer.getPosition().adjacentWith(killee.getPosition());
                 livingDies(killee);
                 showKillEvent(killer,killee);
@@ -258,19 +258,19 @@ public class Game implements Runnable{
         }
         //启动线程
         startLivingThread(elder);
-        for(Living l:elder.getCalabashes())
+        for(Item l:elder.getCalabashes())
             startLivingThread(l);
         startLivingThread(snakeDemon);
         ScorpionDemon scorpionDemon=snakeDemon.getScorpionDemon();
         startLivingThread(scorpionDemon);
-        for(Living l:scorpionDemon.getFollowDemons())
+        for(Item l:scorpionDemon.getFollowDemons())
             startLivingThread(l);
         scheduler.scheduleAtFixedRate(this,40,
                 INTERVAL,TimeUnit.MILLISECONDS);
         scheduler.scheduleAtFixedRate(judgeHandler,50,INTERVAL/2,TimeUnit.MILLISECONDS);
     }
 
-    private void startLivingThread(Living living){
+    private void startLivingThread(Item living){
         living.setMovable(false);
         activeLivings.add(living);
         living.start();
@@ -317,7 +317,7 @@ public class Game implements Runnable{
                 result="葫芦娃胜!";
             else
                 result="妖精胜!";
-            for(Living living:activeLivings)
+            for(Item living:activeLivings)
                 living.interrupt();
             Platform.runLater(new Runnable() {
                 @Override
@@ -336,8 +336,8 @@ public class Game implements Runnable{
         System.out.println("check is Over: "+activeLivings.toString());
         if(activeLivings.isEmpty())
             return true;
-        Living first=activeLivings.get(0);
-        for(Living living:activeLivings){
+        Item first=activeLivings.get(0);
+        for(Item living:activeLivings){
             if(living.isAttackable(first))
                 return false;
         }
@@ -347,7 +347,7 @@ public class Game implements Runnable{
     /**
      * 实质上只是加到队列里
      */
-    public void decide(Living living1,Living living2){
+    public void decide(Item living1, Item living2){
 //        blockingQueue.add(new Judger(living1,living2));
 //        commitDecide();
 //        notifyAll();
@@ -371,7 +371,7 @@ public class Game implements Runnable{
     /**
      * 生物体死亡，移动引用，并停止线程
      */
-    public synchronized void livingDies(Living living){
+    public synchronized void livingDies(Item living){
         living.die();
         boolean flag=activeLivings.remove(living);
         assert flag;  //如果assert failed，则表明线程冲突
@@ -393,9 +393,9 @@ public class Game implements Runnable{
      * @param living 寻找攻击目标的生物
      * @return 被锁定为目标的生物。如果不存在了，返回Null.
      */
-    public synchronized Living findEnemyFor(Living living){
+    public synchronized Item findEnemyFor(Item living){
         Collections.shuffle(activeLivings);
-        for(Living another:activeLivings){ //ConcurrentModificationException??
+        for(Item another:activeLivings){ //ConcurrentModificationException??
             if(living.isAttackable(another))
                 return another;
         }
@@ -403,7 +403,7 @@ public class Game implements Runnable{
     }
 
 
-    public void assertActive(Living living){
+    public void assertActive(Item living){
         if(!activeLivings.contains(living)) {
             System.out.println("assertActive failed! " + living);
             System.exit(189);

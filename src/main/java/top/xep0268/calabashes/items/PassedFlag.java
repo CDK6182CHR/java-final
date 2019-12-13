@@ -2,7 +2,7 @@ package top.xep0268.calabashes.items;
 import top.xep0268.calabashes.Game;
 import top.xep0268.calabashes.field.Field;
 import top.xep0268.calabashes.field.*;
-public class PassedFlag extends Living{
+public class PassedFlag extends Item {
     private static int number;
     static {
         number=0;
@@ -22,7 +22,7 @@ public class PassedFlag extends Living{
     }
 
     @Override
-    public boolean isAttackable(Living living) {
+    public boolean isAttackable(Item living) {
         return false;
     }
 
