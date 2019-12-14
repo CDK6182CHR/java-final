@@ -1,0 +1,207 @@
+@startuml
+
+abstract class top.xep0268.calabashes.items.Item{
+    #top.xep0268.calabashes.field.Field top.xep0268.calabashes.field;
+    #top.xep0268.calabashes.field.Position position;
+    #boolean moveable;
+    +boolean move(int dx,int dy);
+    +boolean swapWith(Living another);
+    +boolean moveOrSwap(int dx,int dy);
+    +boolean walkTowards(Position position);
+    -boolean pathTo(Field passed, Position position, List<Item> called);
+    +boolean exchangeable();
+}
+
+top.xep0268.calabashes.field.Block o-- top.xep0268.calabashes.items.Item
+top.xep0268.calabashes.items.Item *-- top.xep0268.calabashes.field.Position
+
+abstract class top.xep0268.calabashes.items.Living{
+    -Pane pane;
+}
+top.xep0268.calabashes.items.Item <|-- top.xep0268.calabashes.items.Living
+
+
+
+class top.xep0268.calabashes.items.Calabash{
+    -int order;
+    +String toString();
+}
+
+top.xep0268.calabashes.items.Living <|-- top.xep0268.calabashes.items.Calabash
+
+class top.xep0268.calabashes.items.Elder{
+    -Calabash[] top.xep0268.calabashes;
+    +void standAsSnake();
+    +String toString();
+}
+
+top.xep0268.calabashes.items.Living <|-- top.xep0268.calabashes.items.Elder
+top.xep0268.calabashes.items.Elder "7" o-- top.xep0268.calabashes.items.Calabash
+
+class top.xep0268.calabashes.items.FollowDemon{
+    -int order;
+    +String toString();
+    +boolean exchangeable();
+}
+
+top.xep0268.calabashes.items.Living <|-- top.xep0268.calabashes.items.FollowDemon
+
+class top.xep0268.calabashes.items.ScorpionDemon{
+    -int followCount;
+    -top.xep0268.calabashes.FollowDemonFollowDemon[] followDemons;
+    +void standAsSwing();
+    +void standAsArrow();
+    +String toString();
+    -boolean findPlaceForSwing();
+    -boolean findPlaceForArrow();
+}
+
+top.xep0268.calabashes.items.Living <|-- top.xep0268.calabashes.items.ScorpionDemon
+top.xep0268.calabashes.items.ScorpionDemon "n" ... top.xep0268.calabashes.items.FollowDemon
+
+class top.xep0268.calabashes.items.SnakeDemon{
+    -top.xep0268.calabashes.items.ScorpionDemon scorpionDemon;
+    +void standAsArrow();
+    +void standAsSwing();
+    +String toString();
+}
+
+top.xep0268.calabashes.items.Living <|-- top.xep0268.calabashes.items.SnakeDemon
+top.xep0268.calabashes.items.SnakeDemon ... top.xep0268.calabashes.items.ScorpionDemon
+
+class top.xep0268.calabashes.field.Block<T extends Item>{
+    -Item Living;
+    -int x,y;
+    +void setLiving(T);
+    +T getLiving();
+    +void removeLiving();
+}
+
+class top.xep0268.calabashes.field.GraphicBlock{
+    -GridPane pane;
+}
+top.xep0268.calabashes.field.Block <|-- top.xep0268.calabashes.field.GraphicBlock
+
+top.xep0268.calabashes.field.Field "M*N" *-- top.xep0268.calabashes.field.Block
+
+class top.xep0268.calabashes.field.Position{
+    -int x,y;
+    +setPos(int x,int y);
+    +int getX();
+    +int getY();
+    +boolean adjacentWith(Position another);
+    +Position adjacentPosition(Direction dir);
+    +boolean equals(Position an);
+    +Position copy();
+    +String toString();
+}
+
+class top.xep0268.calabashes.field.Direction{
+    -int dir;
+    +Direction(Position center,target);
+    +int dx();
+    +int dy();
+    +void next();
+}
+
+top.xep0268.calabashes.field.Position -- top.xep0268.calabashes.field.Direction
+
+class top.xep0268.calabashes.field.Field<T extends Block>{
+    +static int M,N;
+    -top.xep0268.calabashes.items.Living[][] map;
+    +boolean addLiving(Living);
+    +boolean addLiving(Living,Position);
+    +void removeLiving(Position);
+    +Living livingAt(Position);
+    +boolean moveLiving(Living,int,int);
+    +boolean swapLiving(Living,Living);
+    +boolean inside(Position);
+    +void draw();
+}
+
+class top.xep0268.calabashes.field.BattleField{
+
+}
+top.xep0268.calabashes.field.Field <|-- top.xep0268.calabashes.field.BattleField
+
+class top.xep0268.calabashes.Game{
+    -Living[] livings;
+    -EventReader reader;
+    -EventWriter writer;
+}
+top.xep0268.calabashes.Game *-- top.xep0268.calabashes.Living
+top.xep0268.calabashes.Game *-- top.xep0268.calabashes.field.BattleField
+top.xep0268.calabashes.Game *-- top.xep0268.calabashes.field.BattleGridPane
+top.xep0268.calabashes.field.BattleGridPane --- top.xep0268.calabashes.field.BattleField
+
+abstract class top.xep0268.calabashes.formations.Formation{
+    #top.xep0268.calabashes.field.Position[] form();
+}
+
+class top.xep0268.calabashes.formations.SwingFormation{
+}
+
+top.xep0268.calabashes.formations.Formation <|-- top.xep0268.calabashes.formations.SwingFormation
+
+class top.xep0268.calabashes.formations.ArrowFormation{
+
+}
+
+class top.xep0268.calabashes.formations.SnakeFormation{
+}
+
+top.xep0268.calabashes.formations.Formation <|-- top.xep0268.calabashes.formations.SnakeDemon
+
+top.xep0268.calabashes.formations.Formation <|-- top.xep0268.calabashes.formations.ArrowFormation
+
+class top.xep0268.calabashes.formations.FormationHandler{
+    -Formation formation;
+    -top.xep0268.calabashes.items.Living[] followers;
+    -top.xep0268.calabashes.items.Living leader;
+    +void embattle();
+}
+
+top.xep0268.calabashes.formations.FormationHandler o-- top.xep0268.calabashes.formations.Formation
+
+top.xep0268.calabashes.items.ScorpionDemon ... top.xep0268.calabashes.formations.FormationHandler
+top.xep0268.calabashes.items.Elder ... top.xep0268.calabashes.formations.FormationHandler
+
+abstract class top.xep0268.calabashes.log.AbstractEvent{
+    -Living subject;
+    -Position position;
+    -long timeStamp;
+    +int compareTo();
+}
+
+class top.xep0268.calabashes.log.KillEvent{
+    -Living object;
+}
+top.xep0268.calabashes.log.AbstractEvent <|-- top.xep0268.calabashes.log.KillEvent
+
+class top.xep0268.calabashes.log.LivingCreatedEvent{
+
+}
+top.xep0268.calabashes.log.AbstractEvent <|-- top.xep0268.calabashes.log.LivingCreatedEvent
+
+class top.xep0268.calabashes.log.LivingMoveEvent{
+    -Position oldPosition;
+}
+top.xep0268.calabashes.log.AbstractEvent <|-- top.xep0268.calabashes.log.LivingMoveEvent
+
+
+class top.xep0268.calabashes.log.EventReader{
+    -ObjectInputStream inputStream;
+    +AbstractEvent read();
+}
+
+top.xep0268.calabashes.log.EventReader "Produces" --> top.xep0268.calabashes.log.AbstractEvent
+
+class top.xep0268.calabashes.log.EventWriter{
+    -ObjectOutputStream outputStream;
+    +void write(AbstractEvent);
+}
+
+top.xep0268.calabashes.log.EventWriter --- top.xep0268.calabashes.log.AbstractEvent
+
+
+@enduml

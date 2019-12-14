@@ -26,16 +26,7 @@ public class Block<T extends Item> {
             return false;
         }
         living=l;
-        extendInterval();
         return true;
-    }
-
-    private synchronized void extendInterval(){
-//        try{
-//            TimeUnit.MILLISECONDS.sleep(3);
-//        }catch (InterruptedException e){
-//            //
-//        }
     }
 
     public synchronized T getLiving(){
@@ -45,7 +36,6 @@ public class Block<T extends Item> {
     public synchronized void removeLiving(){
 //        System.out.println("Enter Block::removeLiving ("+x+", "+y+")");
         living=null;
-        extendInterval();
 //        System.out.println("Exit Block::removeLiving ("+x+", "+y+")");
     }
 

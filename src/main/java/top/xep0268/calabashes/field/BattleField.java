@@ -7,7 +7,7 @@ public class BattleField extends Field<GraphicBlock> {
 //    private BattleGridPane gridPane;
 
     private static final BattleField instance=new BattleField();
-    public synchronized static BattleField getInstance(){
+    public static BattleField getInstance(){
         return instance;
     }
 
