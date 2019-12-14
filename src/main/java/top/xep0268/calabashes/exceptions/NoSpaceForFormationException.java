@@ -1,6 +1,5 @@
 package top.xep0268.calabashes.exceptions;
 
-import com.sun.istack.internal.Nullable;
 import top.xep0268.calabashes.field.Block;
 import top.xep0268.calabashes.field.Field;
 import top.xep0268.calabashes.formations.Formation;
@@ -18,7 +17,7 @@ public class NoSpaceForFormationException extends Exception {
     public String toString(){
         return super.toString()+"Cannot find place for leader to format as "+form;
     }
-    public @Nullable Field<Block<?>> getPassed(){
+    public  Field<Block<?>> getPassed(){
         return passed;
     }
 }
