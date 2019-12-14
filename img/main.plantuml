@@ -1,0 +1,117 @@
+abstract class items.Item{
+    -Position pos;
+    -boolean inVedio,moveable,active;
+    +boolean move();
+    +void run();
+    +void die();
+}
+
+abstract class items.Living{
+    Pane pane;
+}
+
+interface items.Leader{
+
+}
+
+items.Item <|-- items.Living
+
+class field.Position{
+    -int x,y;
+    +boolean adjacentWith();
+}
+
+items.Item *-- field.Position
+
+class field.Direction{
+    +Position adjacentPosition();
+    +void aStep();
+}
+
+field.Direction --- field.Position
+
+class field.Block<T extends Item>{
+    -T living;
+    +T getLiving();
+    +void setLiving();
+    +void removeLivingg();
+}
+
+' class field.GraphicBlock{
+'     -Pane pane;
+' }
+
+' field.Block <|-- field.GraphicBlock
+
+class field.Field<T extends Block>{
+    -T[][] map;
+    +boolean addLiving(Item);
+    +Item livingAt(Position);
+}
+field.Field "M*N" *-- field.Block
+
+
+class field.BattleField{
+    -Pane pane;
+}
+field.Field <|-- field.BattleField
+
+abstract class log.AbstractEvent{
+    -long timeStamp;
+    -Living subject;
+    -Position pos;
+    +int compareTo();
+}
+
+class log.EventReader{
+    -ObjectInputStream stream;
+    +AbstractEvent read();
+}
+
+log.EventReader "produces" -->log.AbstractEvent
+
+class log.EventWriter{
+    -ObjectOutputStream stream;
+    +void write(AbstractEvent);
+}
+
+log.EventWriter --- log.AbstractEvent
+
+abstract class formations.Formation{
+    -int N;
+    -Position[] coordinates;
+    #void form();
+}
+
+class formations.FormationHandler<T extends Formation>{
+    -Leader leader;
+    +boolean embattle();
+}
+
+formations.FormationHandler --- items.Leader
+formations.FormationHandler --- formations.Formation
+
+class Judger{
+    -Living living1,living2;
+    +void judge();
+}
+
+class JudgeHandler{
+    -BlockingQueue<Judger> queue;
+    +void run();
+    +void addJudgeTast(Living,Living);
+}
+JudgeHandler "n" *-- Judger
+
+class Game{
+    -List<Item> active,dead;
+    -GridPane pane;
+    +void run();
+    +void loadLog(File);
+}
+
+Game *-- JudgeHandler
+Game *-- field.BattleField
+Game "m" *-- items.Living
+Game *-- log.EventReader
+Game *-- log.EventWriter

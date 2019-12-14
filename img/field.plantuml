@@ -1,0 +1,48 @@
+
+class field.Position{
+    -int x,y;
+    +boolean adjacentWith();
+}
+
+
+class field.Direction{
+    +Position adjacentPosition();
+    +void aStep();
+}
+
+field.Direction --- field.Position
+
+class field.Block<T extends Item>{
+    -T living;
+    +T getLiving();
+    +void setLiving();
+    +void removeLivingg();
+}
+
+class field.GraphicBlock{
+    -Pane pane;
+}
+
+field.Block <|-- field.GraphicBlock
+
+class field.Field<T extends Block>{
+    -T[][] map;
+    +boolean addLiving(Item);
+    +Item livingAt(Position);
+}
+field.Field "M*N" *-- field.Block
+
+
+class field.BattleField{
+    -Pane pane;
+}
+field.Field <|-- field.BattleField
+
+
+class field.BattleGridPane{
+    +static BattleGridPane getInstance();
+}
+
+field.BattleGridPane --- field.BattleField
+
+field.Field --- field.Position

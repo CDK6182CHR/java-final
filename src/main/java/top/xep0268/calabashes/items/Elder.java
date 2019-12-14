@@ -29,11 +29,6 @@ public class Elder extends Living implements Leader {
                 colors[0]);
         field.addLiving(calabashes[0]);
         for(int i=1;i<7;i++){
-//            top.xep0268.calabashes.fieldashes.Position position;
-//            if(i!=0)
-//                position=field_.randomPosition();
-//            else
-//                position=new top.xep0268.calabashes.fieldashes.Position(5,1);
             Position position=field_.leftRandomPosition();
             Calabash cal=new Calabash(position,field_,game,i+1,colors[i]);
             calabashes[i]=cal;
@@ -44,41 +39,6 @@ public class Elder extends Living implements Leader {
     @Override
     protected String getResourceName() {
         return active?"/lrj.png":"/lrjd.png";
-    }
-
-    /*
-     * 按“长蛇阵”排列。指定老大在一个位置（保证他下面足以排够其他的人），
-     * 然后依次指挥其他葫芦娃到下面的位置来。
-     */
-    public void standAsSnake(){
-//        Calabash[] followers = new Calabash[6];
-//        for(int i=1;i<7;i++)
-//            followers[i-1]=top.xep0268.calabashes[i];
-//        FormationOld form= new SnakeFormationOld(top.xep0268.calabashes.field,top.xep0268.calabashes[0],
-//                followers);
-//        try {
-//            standAsFormation(form);
-//        }catch(NoSpaceForFormationException e){
-//            System.out.println(e.toString());
-//        }
-//        for (Calabash c:top.xep0268.calabashes){
-//            c.setMovable(true);
-//        }
-//        while (Field.N-top.xep0268.calabashes[0].getPosition().getY()<7) {
-//            top.xep0268.calabashes[0].moveOrSwap(0,-1);
-//        }
-//        top.xep0268.calabashes[0].setMovable(false);
-//        Position pos=top.xep0268.calabashes[0].getPosition().copy();
-//        for(int i=1;i<7;i++){
-//            pos.setPos(pos.getX(),pos.getY()+1);
-//            try {
-//                top.xep0268.calabashes[i].walkTowards(pos);
-//            }
-//            catch(PathNotFoundException e){
-//                System.out.println("Cannot format as snake due to "+e);
-//            }
-//            top.xep0268.calabashes[i].setMovable(false);
-//        }
     }
 
     @Override

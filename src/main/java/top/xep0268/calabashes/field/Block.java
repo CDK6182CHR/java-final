@@ -29,7 +29,7 @@ public class Block<T extends Item> {
         return true;
     }
 
-    public synchronized T getLiving(){
+    public T getLiving(){
         return living;
     }
 

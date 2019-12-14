@@ -1,0 +1,59 @@
+abstract class items.Item{
+    -Position pos;
+    -boolean inVedio,moveable,active;
+    +boolean move();
+    +void run();
+    +void die();
+}
+
+abstract class items.Living{
+    Pane pane;
+}
+
+interface items.Leader{
+    +boolean embattleFormation();
+}
+
+items.Item <|-- items.Living
+
+class items.Calabash{
+    -int order;
+    -String color;
+}
+
+items.Living <|-- items.Calabash
+
+class items.Elder{
+    Calabash[] calabashes;
+}
+
+items.Living <|-- items.Elder
+items.Leader <|-- items.Elder
+items.Elder --- items.Calabash
+
+class items.FollowDemon{
+    -int order;
+}
+
+items.Living <|-- items.FollowDemon
+
+class items.ScorpionDemon{
+    -FollowDemon[] followers;
+}
+
+items.Living <|-- items.ScorpionDemon
+items.Leader <|-- items.ScorpionDemon
+items.ScorpionDemon --- items.FollowDemon
+
+class items.SnakeDemon{
+    -ScorpionDemon scorpion;
+}
+
+items.Living <|-- items.SnakeDemon
+items.Leader <|-- items.SnakeDemon
+items.SnakeDemon --- items.ScorpionDemon
+
+class items.PassedFlag{
+
+}
+items.Item <|-- items.PassedFlag

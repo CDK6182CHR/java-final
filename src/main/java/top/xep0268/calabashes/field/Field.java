@@ -7,18 +7,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * M*N的场地。
  * 先行后列。x为横坐标。访问格式为map[y][x]
- *
- * 死循环问题：
- * 1. 每个线程无法结束的情况
- * 2. 每个线程都能结束，但是循环。
- * ！！必须保证每个线程在一个周期内结束
- * !! 已经死亡的生物为什么会又冒出来？
- * synchronized锁是对象只能进一个，还是只能进一个方法？  --对象只能进一个。
- * synchronized(lock)这样的代码块只允许一个线程进入；进入不会导致lock.lock()发生。
- * 所以线程死在等待synchronized block的地方，这个过程恰好是cannot be interrupted的。
- * 现有问题是：对synchronized块的设计考虑不足。
- * 注意：Condition的await必须获得了锁才可以。相当于还是单线程的。不能去等锁。
- *
  * 2019.12.06：改为泛型, 泛型参数为Block的类型。
  * 使用反射方式做Block数组和实例化。
  */

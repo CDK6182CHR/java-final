@@ -325,27 +325,6 @@ public abstract class Item extends Thread implements Serializable{
 
     public abstract String livingName();
 
-//    /**
-//     * 计划移动事件。
-//     * @param newPosition 要移动到的位置
-//     * @param oldPosition 移动前所在位置
-//     * @param time 移动发生的时间戳，整型数
-//     */
-//    public void scheduleMoveEvent(final Position newPosition,
-//                                  final Position oldPosition,
-//                                  final int time
-//                                  ){
-//        scheduler.schedule(new Runnable() {
-//            @Override
-//            public void run() {
-//                assert oldPosition.equals(position);
-//                boolean flag=move(newPosition.getX()-oldPosition.getX(),
-//                        newPosition.getY()-oldPosition.getY());
-//                assert flag;
-//            }
-//        },time*Game.INTERVAL,TimeUnit.MILLISECONDS);
-//    }
-
     public boolean isInVideo(){
         return inVideo;
     }
