@@ -1,0 +1,33 @@
+
+abstract class formations.Formation{
+    -int N;
+    -Position[] coordinates;
+    #void form();
+}
+
+class formations.SnakeFormation{
+
+}
+formations.Formation <|-- formations.SnakeFormation
+
+class formations.SwingFormation{
+
+}
+formations.Formation <|-- formations.SwingFormation
+
+class formations.ArrowFormation{
+
+}
+formations.Formation <|-- formations.ArrowFormation
+
+class formations.GooseFormation{
+
+}
+formations.Formation <|-- formations.GooseFormation
+
+class formations.FormationHandler<T extends Formation>{
+    -Leader leader;
+    +boolean embattle();
+}
+
+formations.FormationHandler --- formations.Formation

@@ -100,15 +100,6 @@ public class Game implements Runnable{
             calabashList.setOnKeyPressed(null);
             demonList=controller.demonList;
             calabashList.setOnKeyPressed(null);
-//            ColumnConstraints constraints=new ColumnConstraints();
-//            constraints.setPercentWidth(80);
-//            pane.getColumnConstraints().add(constraints);
-//            constraints=new ColumnConstraints();
-//            constraints.setPercentWidth(10);
-//            pane.getColumnConstraints().add(constraints);
-//            constraints=new ColumnConstraints();
-//            constraints.setPercentWidth(10);
-//            pane.getColumnConstraints().add(constraints);
         }catch (IOException e){
             System.err.println("caught IOException");
             e.printStackTrace();
@@ -267,7 +258,7 @@ public class Game implements Runnable{
             startLivingThread(l);
         scheduler.scheduleAtFixedRate(this,40,
                 INTERVAL,TimeUnit.MILLISECONDS);
-        scheduler.scheduleAtFixedRate(judgeHandler,50,INTERVAL/2,TimeUnit.MILLISECONDS);
+        scheduler.scheduleAtFixedRate(judgeHandler,50,INTERVAL/4,TimeUnit.MILLISECONDS);
     }
 
     private void startLivingThread(Living living){
@@ -401,14 +392,6 @@ public class Game implements Runnable{
                 return another;
         }
         return null;
-    }
-
-
-    public void assertActive(Item living){
-        if(!activeLivings.contains(living)) {
-            System.out.println("assertActive failed! " + living);
-            System.exit(189);
-        }
     }
 
     public BattleField getField(){

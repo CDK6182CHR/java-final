@@ -1,0 +1,36 @@
+
+abstract class log.AbstractEvent{
+    -long timeStamp;
+    -Living subject;
+    -Position pos;
+    +int compareTo();
+}
+
+class log.LivingCreatedEvent{
+
+}
+log.AbstractEvent <|-- log.LivingCreatedEvent
+
+class log.LivingMoveEvent{
+    -Position oldPosition;
+}
+log.AbstractEvent <|-- log.LivingMoveEvent
+
+class log.KillEvent{
+    -Living object;
+}
+log.AbstractEvent <|-- log.KillEvent
+
+class log.EventReader{
+    -ObjectInputStream stream;
+    +AbstractEvent read();
+}
+
+log.EventReader "produces" -->log.AbstractEvent
+
+class log.EventWriter{
+    -ObjectOutputStream stream;
+    +void write(AbstractEvent);
+}
+
+log.EventWriter --- log.AbstractEvent

@@ -116,7 +116,7 @@ public class Field<T extends Block> {
         assert livingAt(living.getPosition())==living;
 //        System.out.println("moveLiving: "+living+" "+oldPosition+" -> "
 //        +"("+nx+","+ny+")");
-        if(living.isInVideo())
+        if(!living.isInVideo())
             try {
                 TimeUnit.MILLISECONDS.sleep(2);
             }catch (InterruptedException e){

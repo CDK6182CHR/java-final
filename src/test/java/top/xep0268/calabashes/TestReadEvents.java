@@ -1,4 +1,4 @@
-package tests;
+package top.xep0268.calabashes;
 
 import top.xep0268.calabashes.log.*;
 
@@ -10,7 +10,7 @@ import java.util.List;
 public class TestReadEvents {
     public static void main(String[] args) throws IOException {
         EventReader reader=new EventReader(new File(
-                "CalabashLogs\\Log-2019-12-07-08-52-12.dat"));
+                "CalabashLogs\\Log-2019-12-18-11-10-11.dat"));
         AbstractEvent event;
         List<AbstractEvent> list=new LinkedList<>();
         do{
