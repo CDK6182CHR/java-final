@@ -350,13 +350,18 @@ todo
 
 # 附录：葫芦娃波函数的量子力学推导
 
+> 建议使用支持Latex的Markdown编辑器阅读本段，例如Typora。
+
 **遇事不决，量子力学**。我们用量子力学基本理论分析葫芦娃大战妖精所处空间的性质。
 
 设空间为二维空间，存在葫芦娃和妖精的能量场，其能量强度满足薛定谔方程
+
 $$
 \mathrm{i}\hbar\frac{\partial \Psi}{\partial t}=-\frac{\hbar^2}{2m}(\frac{\partial^2 \Psi}{\partial ^2 x}+\frac{\partial ^2 \Psi}{\partial ^2 y})+V\Psi
 $$
+
 由于所有生物都不能超出图幅，所以势函数可以按二维无限深方势阱处理
+
 $$
 V(x,y)=
 \left\{ \begin{array}{rcl}
@@ -364,7 +369,9 @@ V(x,y)=
 &\infty &,\mbox{otherwise}
 \end{array}\right.
 $$
+
 由分离变量法，根据无限深方势阱的边缘的波函数显然是0做定解，容易得到时间部分的解和空间部分的通解、量子化的能量
+
 $$
 \begin{align*}
 \phi(t)&=\mathrm{e}^{-\frac{iE_{m,n}t}{\hbar}}\\
@@ -372,13 +379,17 @@ $$
 E_{m,n}&=[(\frac{n}{a})^2+(\frac{m}{b})^2]\frac{\pi ^2 \hbar^2}{2m}
 \end{align*}
 $$
+
 又考虑到空间关于$y$方向是对称的，所以量子数m只取1；又设葫芦娃和妖精对应的量子数$n$分别为0和1，初始时刻是等概率的波函数叠加。根据初始条件做傅里叶展开，并做归一化，我们略去详细过程，直接给出波函数的解
+
 $$
 \begin{align}
 \Psi(x,y,t)=\sqrt{\frac{2}{ab}}\sin(\frac{\pi y}{b})[(\sin(\frac{\pi x}{a})\mathrm{e}^{-\mathrm{i}(\frac{1}{a^2}+\frac{1}{b^2})\frac{\pi^2\hbar t}{2m}}+\sin(\frac{2\pi x}{a})\mathrm{e}^{-\mathrm{i}(\frac{4}{a^2}+\frac{1}{b^2})\frac{\pi^2\hbar t}{2m}}] 
 \end{align}
 $$
+
 根据量子力学的统计诠释，波函数的模方表示粒子出现在该位置的概率
+
 $$
 |\Psi(x,y,t)|^2= \frac{2}{ab}\sin^2(\frac{\pi y}{b})[\sin^2({\frac{\pi x}{a}})+\sin^2(\frac{2\pi x}{a})+2\sin(\frac{\pi x}{a})\sin(\frac{2\pi x}{b})\cos(\frac{3\pi^2\hbar t}{2a^2m})]
 $$
@@ -387,6 +398,7 @@ $$
 当葫芦娃与妖精在8邻域内接触时，相互之间发生冲突，则二者生死概率由其所处时空位置的能量大小决定。在充分多的系综下我们不妨作简化，**设两生物发生冲突时，所在时空位置能量较高的一方存活**。
 
 在编码过程中，简化起见，我们设空间的时间和空间（格子）的都是基本单位的整数倍，
+
 $$
 \begin{align}
 \hat{t}&=\frac{2m}{3\pi^2\hbar}\\
@@ -394,7 +406,9 @@ $$
 \hat{y}&=\frac{1}{b\pi}
 \end{align}
 $$
+
 定义以上述基本单位为单位的相对值，
+
 $$
 \begin{align}
 t_r&=\frac{t}{\hat{t}}\\
@@ -402,8 +416,12 @@ x_r&=\frac{x}{\hat{x}}\\
 y_r&=\frac{y}{\hat{y}}\\
 \end{align}
 $$
+
 又程序中我们只需要比较，所以归一化常量没有实际意义，则波函数模方简化为
+
 $$
 |\Psi (x_r,y_r,t_r)|^2=\sin^2(y_r)[\sin^2(x_r)+\sin^2(2x_r)+2\sin(x_r)\sin(y_r)\cos(\frac{t_r}{a^2})]
 $$
+
 此公式由葫芦娃的爷爷最先导出，故称为**老人家公式**（*The Elder's Formula*）。这就是Java代码中使用的表达式。
+

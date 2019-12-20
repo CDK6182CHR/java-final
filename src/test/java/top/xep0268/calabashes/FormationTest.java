@@ -1,5 +1,6 @@
 package top.xep0268.calabashes;
 
+import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.internal.runners.statements.Fail;
@@ -21,11 +22,11 @@ public class FormationTest {
         private LogicalItem[] items=new LogicalItem[N];
         public LogicalLeader(Position pos, Field field_, String mark) {
             super(pos, field_, mark);
+            field_.addLiving(this);
             for(int i=0;i<N;i++){
                 items[i]=new LogicalItem(field.randomPosition(),field_,""+i);
                 field_.addLiving(items[i]);
             }
-            field_.addLiving(this);
         }
 
         @Override
@@ -36,6 +37,11 @@ public class FormationTest {
             synchronized (this) {
                 handler.embattle();
             }
+        }
+        public void showPosition(){
+            System.out.println(""+this+"@"+getPosition());
+            for(Item i:items)
+                System.out.println(""+i+"@"+i.getPosition());
         }
     }
 
@@ -78,5 +84,12 @@ public class FormationTest {
     public void testGoose()throws NoSpaceForFormationException{
         leader.embattleFormation(GooseFormation.class);
         field.draw();
+    }
+
+    @After
+    public void showResult(){
+        System.out.println("===========TestResultReport===========");
+        field.draw();
+        leader.showPosition();
     }
 }

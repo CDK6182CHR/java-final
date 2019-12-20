@@ -28,7 +28,7 @@ public class LivingTest{
     public void testMove(){
         field.draw();
         assertTrue(item1.move(1,0));
-        assertTrue(item1.getPosition().equals(new Position(2,1)));
+        assertEquals(item1.getPosition(), new Position(2, 1));
         assertFalse(item2.move(1,-1));
         field.draw();
     }
